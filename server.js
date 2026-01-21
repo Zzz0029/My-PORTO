@@ -45,7 +45,6 @@ const upload = multer({ storage: storage });
 const DATA_FILE = path.join(__dirname, 'data', 'data.json');
 
 // Helper: Read Data
-// Helper: Read Data
 const readData = async () => {
     if (process.env.VERCEL) {
         try {
@@ -55,10 +54,31 @@ const readData = async () => {
             if (!data) {
                 console.log('KV is empty. Seeding from local data.json...');
                 try {
-                    const localData = fs.readFileSync(path.join(__dirname, 'data', 'data.json'), 'utf8');
-                    data = JSON.parse(localData);
-                    await kv.set('portfolio_data', data);
-                    console.log('KV seeded successfully.');
+                    const pathsToTry = [
+                        path.join(process.cwd(), 'data', 'data.json'),
+                        path.join(__dirname, 'data', 'data.json'),
+                        path.join(process.cwd(), 'backend', 'data', 'data.json')
+                    ];
+
+                    let localData = null;
+                    let foundPath = '';
+
+                    for (const p of pathsToTry) {
+                        if (fs.existsSync(p)) {
+                            console.log(`Found data at: ${p}`);
+                            localData = fs.readFileSync(p, 'utf8');
+                            foundPath = p;
+                            break;
+                        }
+                    }
+
+                    if (localData) {
+                        data = JSON.parse(localData);
+                        await kv.set('portfolio_data', data);
+                        console.log('KV seeded successfully from ' + foundPath);
+                    } else {
+                        console.warn('Could not find data.json in any expected path.');
+                    }
                 } catch (seedErr) {
                     console.error('Error seeding KV:', seedErr);
                     // Fallback to empty structure if seeding fails
@@ -298,6 +318,74 @@ app.delete('/api/data/:type/:id', authenticate, async (req, res) => {
 
     await writeData(data);
     res.json({ success: true });
+});
+
+// Debug Route
+app.get('/api/debug', (req, res) => {
+    const debugInfo = {
+        cwd: process.cwd(),
+        dirname: __dirname,
+        env: process.env.VERCEL ? 'Vercel' : 'Local',
+        filesInCwd: [],
+        filesInData: [],
+        dataFileExists: false
+    };
+
+    try {
+        debugInfo.filesInCwd = fs.readdirSync(process.cwd());
+    } catch (e) { debugInfo.filesInCwd = e.message; }
+
+    try {
+        const dataPath = path.join(process.cwd(), 'data');
+        if (fs.existsSync(dataPath)) {
+            debugInfo.filesInData = fs.readdirSync(dataPath);
+        } else {
+            debugInfo.filesInData = 'Directory not found';
+        }
+    } catch (e) { debugInfo.filesInData = e.message; }
+
+    // Check various paths for data.json
+    const pathsToCheck = [
+        path.join(process.cwd(), 'data', 'data.json'),
+        path.join(__dirname, 'data', 'data.json'),
+    ];
+
+    debugInfo.pathChecks = pathsToCheck.map(p => ({ path: p, exists: fs.existsSync(p) }));
+
+    res.json(debugInfo);
+});
+
+// Manual Seed Route
+app.get('/api/seed', async (req, res) => {
+    if (!process.env.VERCEL) return res.json({ message: 'Only for Vercel environment' });
+
+    try {
+        const pathsToTry = [
+            path.join(process.cwd(), 'data', 'data.json'),
+            path.join(__dirname, 'data', 'data.json')
+        ];
+
+        let localData = null;
+        let usedPath = '';
+
+        for (const p of pathsToTry) {
+            if (fs.existsSync(p)) {
+                usedPath = p;
+                localData = fs.readFileSync(p, 'utf8');
+                break;
+            }
+        }
+
+        if (localData) {
+            const parsed = JSON.parse(localData);
+            await kv.set('portfolio_data', parsed);
+            return res.json({ success: true, message: 'Seeded successfully', source: usedPath });
+        } else {
+            return res.status(404).json({ success: false, message: 'data.json not found' });
+        }
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
+    }
 });
 
 app.listen(PORT, () => {
