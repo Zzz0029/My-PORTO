@@ -5,11 +5,16 @@ const multer = require('multer');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const { kv } = require('@vercel/kv');
+const { Redis } = require('@upstash/redis');
 const { put } = require('@vercel/blob');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Initialize Redis
+const redis = process.env.VERCEL
+    ? Redis.fromEnv()
+    : null;
 
 // Middleware
 app.use(cors());
@@ -48,11 +53,11 @@ const DATA_FILE = path.join(__dirname, 'data', 'data.json');
 const readData = async () => {
     if (process.env.VERCEL) {
         try {
-            let data = await kv.get('portfolio_data');
+            let data = await redis.get('portfolio_data');
 
             // IF KV IS EMPTY, SEED FROM LOCAL FILE
             if (!data) {
-                console.log('KV is empty. Seeding from local data.json...');
+                console.log('Redis is empty. Seeding from local data.json...');
                 try {
                     const pathsToTry = [
                         path.join(process.cwd(), 'data', 'data.json'),
@@ -74,13 +79,13 @@ const readData = async () => {
 
                     if (localData) {
                         data = JSON.parse(localData);
-                        await kv.set('portfolio_data', data);
-                        console.log('KV seeded successfully from ' + foundPath);
+                        await redis.set('portfolio_data', data);
+                        console.log('Redis seeded successfully from ' + foundPath);
                     } else {
                         console.warn('Could not find data.json in any expected path.');
                     }
                 } catch (seedErr) {
-                    console.error('Error seeding KV:', seedErr);
+                    console.error('Error seeding Redis:', seedErr);
                     // Fallback to empty structure if seeding fails
                     data = { certifications: [], hof: [], about: {}, stats: {} };
                 }
@@ -88,7 +93,7 @@ const readData = async () => {
 
             return data || { certifications: [], hof: [], about: {}, stats: {} };
         } catch (err) {
-            console.error('KV Read Error:', err);
+            console.error('Redis Read Error:', err);
             return { certifications: [], hof: [], about: {}, stats: {} };
         }
     } else {
@@ -107,7 +112,7 @@ const readData = async () => {
 // Helper: Write Data
 const writeData = async (data) => {
     if (process.env.VERCEL) {
-        await kv.set('portfolio_data', data);
+        await redis.set('portfolio_data', data);
     } else {
         fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
     }
