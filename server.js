@@ -180,6 +180,16 @@ app.put('/api/data/about', authenticate, (req, res) => {
     res.json({ success: true, about: data.about });
 });
 
+// Update Stats Section
+app.put('/api/data/stats', authenticate, (req, res) => {
+    const updates = req.body;
+    const data = readData();
+
+    data.stats = { ...data.stats, ...updates };
+    writeData(data);
+    res.json({ success: true, stats: data.stats });
+});
+
 app.put('/api/data/:type/:id', authenticate, upload.single('image'), (req, res) => {
     const { type, id } = req.params;
     const updates = req.body;

@@ -36,10 +36,10 @@ async function loadData() {
     renderCerts();
     renderHof();
     if (allData.about) renderAbout(allData.about);
+    if (allData.stats) renderStats(allData.stats);
 }
 
 // Render Functions
-
 
 function renderAbout(data) {
     document.getElementById('edit-bio').value = data.bio || '';
@@ -48,30 +48,49 @@ function renderAbout(data) {
     document.getElementById('edit-status').value = data.status || '';
 }
 
+function renderStats(data) {
+    document.getElementById('edit-bugs').value = data.critical_bugs || '';
+    document.getElementById('edit-bounties').value = data.total_bounties || '';
+    document.getElementById('edit-companies').value = data.top_companies || '';
+}
+
 async function saveAbout() {
-    const updates = {
+    const aboutUpdates = {
         bio: document.getElementById('edit-bio').value,
         expertise: document.getElementById('edit-expertise').value,
         mission: document.getElementById('edit-mission').value,
         status: document.getElementById('edit-status').value
     };
 
-    try {
-        const res = await fetch('/api/data/about', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updates)
-        });
+    const statsUpdates = {
+        critical_bugs: document.getElementById('edit-bugs').value,
+        total_bounties: document.getElementById('edit-bounties').value,
+        top_companies: document.getElementById('edit-companies').value
+    };
 
-        if (res.ok) {
-            alert('System Info Updated Successfully');
+    try {
+        const [resAbout, resStats] = await Promise.all([
+            fetch('/api/data/about', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(aboutUpdates)
+            }),
+            fetch('/api/data/stats', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(statsUpdates)
+            })
+        ]);
+
+        if (resAbout.ok && resStats.ok) {
+            alert('System Info & Stats Updated Successfully');
             loadData();
         } else {
             alert('Error updating system info');
         }
     } catch (err) {
         console.error(err);
-        alert('Error updating system info');
+        alert('Error updating info');
     }
 }
 

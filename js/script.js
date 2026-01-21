@@ -156,9 +156,20 @@ async function loadPortfolioData() {
         renderHOF(data.hof);
         renderCerts(data.certifications);
         if (data.about) renderAbout(data.about);
+        if (data.stats) renderStats(data.stats);
     } catch (err) {
         console.error('Error loading data:', err);
     }
+}
+
+function renderStats(stats) {
+    const bugs = document.getElementById('stat-bugs');
+    const bounties = document.getElementById('stat-bounties');
+    const companies = document.getElementById('stat-companies');
+
+    if (bugs) { bugs.innerText = stats.critical_bugs; bugs.classList.remove('animate-pulse'); }
+    if (bounties) { bounties.innerText = stats.total_bounties; bounties.classList.remove('animate-pulse'); }
+    if (companies) { companies.innerText = stats.top_companies; companies.classList.remove('animate-pulse'); }
 }
 
 function renderAbout(data) {

@@ -187,5 +187,10 @@
     "expertise": "Penetration Testing, Vuln Assessment, API Security",
     "mission": "Securing digital infrastructure through ethical hacking.",
     "status": "Active & Available for collaboration."
+  },
+  "stats": {
+    "critical_bugs": "0",
+    "total_bounties": "$0",
+    "top_companies": "0"
   }
 }
