@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Riski Permana | Bug Bounty Hunter & Cyber Security Portfolio</title>
+    <meta name="description"
+        content="Official portfolio of Riski Permana, an independent security researcher specializing in Bug Bounty and digital security.">
+    <meta name="keywords"
+        content="Riski Permana, Riski Bug Bounty, Riski Cyber Security, Security Researcher Indonesia, Penetration Tester Indonesia">
+    <meta name="author" content="Riski Permana">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Riski Permana | Bug Bounty Hunter & Cyber Security Portfolio">
+    <meta property="og:description"
+        content="Official portfolio of Riski Permana, an independent security researcher specializing in Bug Bounty and digital security.">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f0ff',
+                        'cyber-purple': '#b000ff',
+                        'cyber-pink': '#ff00ff',
+                        'matrix-green': '#00ff41',
+                        'neon-yellow': '#fffc00',
+                        'dark-bg': '#0a0a0f',
+                    },
+                    fontFamily: {
+                        'cyber': ['Orbitron', 'sans-serif'],
+                        'tech': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Share Tech Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0a0a0f;
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Matrix Rain Background */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* Cyber Grid Background */
+        .cyber-grid {
+            background-image:
+                linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 50px 50px;
+            }
+        }
+
+        /* Neon Glow Text */
+        .neon-text {
+            text-shadow:
+                0 0 10px rgba(0, 240, 255, 0.8),
+                0 0 20px rgba(0, 240, 255, 0.6),
+                0 0 30px rgba(0, 240, 255, 0.4),
+                0 0 40px rgba(0, 240, 255, 0.2);
+            animation: neon-flicker 2s infinite alternate;
+        }
+
+        @keyframes neon-flicker {
+
+            0%,
+            19%,
+            21%,
+            23%,
+            25%,
+            54%,
+            56%,
+            100% {
+                text-shadow:
+                    0 0 10px rgba(0, 240, 255, 0.8),
+                    0 0 20px rgba(0, 240, 255, 0.6),
+                    0 0 30px rgba(0, 240, 255, 0.4),
+                    0 0 40px rgba(0, 240, 255, 0.2);
+            }
+
+            20%,
+            24%,
+            55% {
+                text-shadow: none;
+            }
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            animation: glitch-skew 1s infinite;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00ff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 #00fff9, 2px 2px #ff00ff;
+            animation: glitch-anim2 1s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                clip: rect(31px, 9999px, 94px, 0);
+            }
+
+            20% {
+                clip: rect(60px, 9999px, 71px, 0);
+            }
+
+            40% {
+                clip: rect(78px, 9999px, 34px, 0);
+            }
+
+            60% {
+                clip: rect(15px, 9999px, 82px, 0);
+            }
+
+            80% {
+                clip: rect(91px, 9999px, 44px, 0);
+            }
+
+            100% {
+                clip: rect(58px, 9999px, 67px, 0);
+            }
+        }
+
+        @keyframes glitch-anim2 {
+            0% {
+                clip: rect(65px, 9999px, 119px, 0);
+            }
+
+            20% {
+                clip: rect(48px, 9999px, 105px, 0);
+            }
+
+            40% {
+                clip: rect(86px, 9999px, 33px, 0);
+            }
+
+            60% {
+                clip: rect(25px, 9999px, 98px, 0);
+            }
+
+            80% {
+                clip: rect(77px, 9999px, 51px, 0);
+            }
+
+            100% {
+                clip: rect(39px, 9999px, 72px, 0);
+            }
+        }
+
+        @keyframes glitch-skew {
+            0% {
+                transform: skew(0deg);
+            }
+
+            10% {
+                transform: skew(2deg);
+            }
+
+            20% {
+                transform: skew(-2deg);
+            }
+
+            30% {
+                transform: skew(0deg);
+            }
+
+            100% {
+                transform: skew(0deg);
+            }
+        }
+
+        /* Cyber Border */
+        .cyber-border {
+            position: relative;
+            border: 2px solid transparent;
+            background: linear-gradient(#0a0a0f, #0a0a0f) padding-box,
+                linear-gradient(45deg, #00f0ff, #b000ff, #ff00ff) border-box;
+            overflow: hidden;
+        }
+
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 240, 255, 0.3), transparent);
+            animation: border-spin 3s linear infinite;
+        }
+
+        @keyframes border-spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Glassmorphism Enhanced */
+        .glassmorphism-cyber {
+            background: rgba(10, 10, 15, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow:
+                0 8px 32px 0 rgba(0, 240, 255, 0.1),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Particle Container */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Scan Line Effect */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    rgba(0, 240, 255, 0.05) 50%,
+                    transparent 100%);
+            animation: scan 8s linear infinite;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        /* Hologram Effect */
+        .hologram {
+            position: relative;
+            animation: hologram-flicker 0.15s infinite;
+        }
+
+        @keyframes hologram-flicker {
+            0% {
+                opacity: 0.95;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.98;
+            }
+        }
+
+        /* Button Cyber Effect */
+        .cyber-button {
+            position: relative;
+            background: linear-gradient(45deg, #00f0ff, #b000ff);
+            border: none;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cyber-button:hover::before {
+            left: 100%;
+        }
+
+        .cyber-button:hover {
+            box-shadow:
+                0 0 20px rgba(0, 240, 255, 0.6),
+                0 0 40px rgba(176, 0, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Card Hover Effect */
+        .cyber-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cyber-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow:
+                0 20px 40px rgba(0, 240, 255, 0.3),
+                0 0 20px rgba(176, 0, 255, 0.2);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00f0ff, #b000ff);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #00f0ff, #ff00ff);
+        }
+
+        /* Typing Animation */
+        .typing-animation {
+            overflow: hidden;
+            border-right: 3px solid #00f0ff;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent;
+            }
+
+            50% {
+                border-color: #00f0ff;
+            }
+        }
+
+        /* Floating Animation */
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Pulse Effect */
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(0, 240, 255, 0.8), 0 0 60px rgba(176, 0, 255, 0.6);
+            }
+        }
+
+        /* Hide scrollbar for horizontal scroll */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .snap-x {
+            scroll-snap-type: x mandatory;
+        }
+
+        .snap-center {
+            scroll-snap-align: center;
+        }
+
+        /* Text Gradient */
+        .text-gradient-cyber {
+            background: linear-gradient(45deg, #00f0ff, #b000ff, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body class="relative">
+
+    <!-- Matrix Rain Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Scanline Effect -->
+    <div class="scanline"></div>
+
+    <!-- Main Content -->
+    <div class="relative z-10">
+
+        <!-- Hero Section -->
+        <header class="min-h-screen flex items-center justify-center relative px-4 sm:px-6 lg:px-8 cyber-grid">
+            <!-- Animated Background Gradients -->
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute w-96 h-96 bg-cyber-blue/20 rounded-full blur-3xl -top-48 -left-48 animate-pulse">
+                </div>
+                <div class="absolute w-96 h-96 bg-cyber-purple/20 rounded-full blur-3xl -bottom-48 -right-48 animate-pulse"
+                    style="animation-delay: 1s;"></div>
+                <div class="absolute w-96 h-96 bg-cyber-pink/20 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse"
+                    style="animation-delay: 2s;"></div>
+            </div>
+
+            <div class="max-w-6xl mx-auto text-center relative z-10">
+                <div class="mb-8">
+                    <!-- Profile Image -->
+                    <div class="relative inline-block mb-8 float">
+                        <div
+                            class="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 mx-auto rounded-full overflow-hidden cyber-border pulse-glow">
+                            <img src="profil.jpg" alt="Riski Permana - Security Researcher dan Bug Bounty Hunter"
+                                class="w-full h-full object-cover hologram"
+                                onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-cyber-blue via-cyber-purple to-cyber-pink flex items-center justify-center text-8xl font-bold font-cyber\'>RP</div>';">
+                        </div>
+                        <!-- Rotating Ring -->
+                        <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-cyber-blue border-r-cyber-purple animate-spin"
+                            style="animation-duration: 3s;"></div>
+                    </div>
+
+                    <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 font-cyber glitch"
+                        data-text="RISKI PERMANA">
+                        <span class="text-gradient-cyber">RISKI PERMANA</span>
+                    </h1>
+
+                    <div class="mb-8">
+                        <p class="text-2xl sm:text-3xl md:text-4xl font-tech neon-text mb-2">
+                            CYBER SECURITY RESEARCHER
+                        </p>
+                        <p class="text-lg sm:text-xl md:text-2xl text-cyber-blue font-mono">
+                            [ BUG BOUNTY HUNTER // PENETRATION TESTER ]
+                        </p>
+                    </div>
+
+                    <p class="text-xl sm:text-2xl text-gray-300 mb-10 font-tech max-w-3xl mx-auto">
+                        &gt;_ Securing the Digital Frontier | Independent Security Researcher
+                    </p>
+
+                    <div class="flex flex-wrap gap-6 justify-center">
+                        <a href="#about"
+                            class="cyber-button px-8 py-4 rounded-lg font-bold text-lg font-cyber flex items-center gap-3 relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            PROFILE
+                        </a>
+                        <a href="#contact"
+                            class="px-8 py-4 glassmorphism-cyber rounded-lg font-bold text-lg font-cyber flex items-center gap-3 hover:bg-white/10 transition-all duration-300 border-2 border-cyber-blue hover:shadow-lg hover:shadow-cyber-blue/50">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13" />
+                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                            CONTACT
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 relative">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-12 text-center font-cyber">
+                    <span class="text-gradient-cyber">&lt; ABOUT ME /&gt;</span>
+                </h2>
+
+                <div class="glassmorphism-cyber rounded-2xl p-8 sm:p-10 md:p-14 cyber-card">
+                    <div class="mb-8">
+                        <div
+                            class="inline-block px-4 py-2 bg-gradient-to-r from-cyber-blue/20 to-cyber-purple/20 rounded-full border border-cyber-blue/50 mb-6">
+                            <span class="font-mono text-cyber-blue">// SECURITY_RESEARCHER.init()</span>
+                        </div>
+                    </div>
+
+                    <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-200 mb-8 font-tech">
+                        Saya adalah <strong class="text-cyber-blue neon-text">Security Researcher independen</strong>
+                        yang berdedikasi
+                        untuk mengamankan ekosistem digital. Dengan pengalaman lebih dari 4 tahun di bidang <strong
+                            class="text-matrix-green">Cyber Security</strong>,
+                        saya telah berhasil menemukan dan melaporkan berbagai kerentanan kritis pada platform-platform
+                        teknologi terkemuka dunia.
+                    </p>
+
+                    <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-200 mb-8 font-tech">
+                        <span class="text-cyber-purple font-bold">Keahlian</span>: Penetration Testing • Vulnerability
+                        Assessment •
+                        Web Application Security • API Security • SQL Injection • Cross-Site Scripting (XSS) •
+                        Authentication Bypass
+                    </p>
+
+                    <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-200 mb-10 font-tech">
+                        Sebagai <strong class="text-cyber-blue">Bug Bounty Hunter</strong> aktif, saya telah
+                        berkontribusi
+                        dalam meningkatkan keamanan berbagai perusahaan Fortune 500 dan startup teknologi.
+                        <span class="text-matrix-green font-bold">Mission: Menjadikan internet tempat yang lebih aman
+                            bagi semua orang.</span>
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-12">
+                        <div class="text-center glassmorphism-cyber p-6 rounded-xl cyber-card">
+                            <div class="text-5xl sm:text-6xl font-bold text-cyber-blue mb-3 font-cyber neon-text">50+
+                            </div>
+                            <div class="text-gray-300 font-tech text-lg">Vulnerabilities</div>
+                            <div class="text-gray-500 text-sm mt-1">Discovered</div>
+                        </div>
+                        <div class="text-center glassmorphism-cyber p-6 rounded-xl cyber-card">
+                            <div class="text-5xl sm:text-6xl font-bold text-matrix-green mb-3 font-cyber neon-text">
+                                $75K+</div>
+                            <div class="text-gray-300 font-tech text-lg">Total Bounty</div>
+                            <div class="text-gray-500 text-sm mt-1">Earned</div>
+                        </div>
+                        <div class="text-center glassmorphism-cyber p-6 rounded-xl cyber-card">
+                            <div class="text-5xl sm:text-6xl font-bold text-cyber-purple mb-3 font-cyber neon-text">15+
+                            </div>
+                            <div class="text-gray-300 font-tech text-lg">Global Companies</div>
+                            <div class="text-gray-500 text-sm mt-1">Secured</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hall of Fame Section -->
+        <section id="achievements" class="py-20 px-4 sm:px-6 lg:px-8 bg-black/40">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-center font-cyber">
+                    <span class="text-gradient-cyber">&lt; HALL OF FAME /&gt;</span>
+                </h2>
+                <p class="text-center text-gray-400 mb-16 max-w-2xl mx-auto font-tech text-xl">
+                    Pencapaian dan pengakuan dari perusahaan teknologi terkemuka dunia
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Google -->
+                    <div
+                        class="glassmorphism-cyber rounded-2xl p-8 cyber-card border-2 border-cyber-blue/20 hover:border-cyber-blue">
+                        <div class="text-7xl mb-6 text-center">🔍</div>
+                        <h3 class="text-2xl font-bold mb-3 text-cyber-blue font-cyber">GOOGLE</h3>
+                        <p class="text-gray-300 mb-4 font-tech text-lg">Critical vulnerability discovered in
+                            authentication system</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-cyber-blue/30">
+                            <span class="text-matrix-green font-bold text-2xl font-cyber neon-text">$15,000</span>
+                            <span class="text-gray-400 font-mono">2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Meta -->
+                    <div
+                        class="glassmorphism-cyber rounded-2xl p-8 cyber-card border-2 border-cyber-purple/20 hover:border-cyber-purple">
+                        <div class="text-7xl mb-6 text-center">👤</div>
+                        <h3 class="text-2xl font-bold mb-3 text-cyber-purple font-cyber">META</h3>
+                        <p class="text-gray-300 mb-4 font-tech text-lg">Security flaw in authentication protocol</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-cyber-purple/30">
+                            <span class="text-matrix-green font-bold text-2xl font-cyber neon-text">$10,000</span>
+                            <span class="text-gray-400 font-mono">2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Microsoft -->
+                    <div
+                        class="glassmorphism-cyber rounded-2xl p-8 cyber-card border-2 border-cyber-blue/20 hover:border-cyber-blue">
+                        <div class="text-7xl mb-6 text-center">💻</div>
+                        <h3 class="text-2xl font-bold mb-3 text-cyber-blue font-cyber">MICROSOFT</h3>
+                        <p class="text-gray-300 mb-4 font-tech text-lg">XSS vulnerability in web application</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-cyber-blue/30">
+                            <span class="text-matrix-green font-bold text-2xl font-cyber neon-text">$8,500</span>
+                            <span class="text-gray-400 font-mono">2023</span>
+                        </div>
+                    </div>
+
+                    <!-- Apple -->
+                    <div
+                        class="glassmorphism-cyber rounded-2xl p-8 cyber-card border-2 border-cyber-pink/20 hover:border-cyber-pink">
+                        <div class="text-7xl mb-6 text-center">🍎</div>
+                        <h3 class="text-2xl font-bold mb-3 text-cyber-pink font-cyber">APPLE</h3>
+                        <p class="text-gray-300 mb-4 font-tech text-lg">Critical data leak prevention</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-cyber-pink/30">
+                            <span class="text-matrix-green font-bold text-2xl font-cyber neon-text">$12,000</span>
+                            <span class="text-gray-400 font-mono">2023</span>
+                        </div>
+                    </div>
+
+                    <!-- Tesla -->
+                    <div
+                        class="glassmorphism-cyber rounded-2xl p-8 cyber-card border-2 border-neon-yellow/20 hover:border-neon-yellow">
+                        <div class="text-7xl mb-6 text-center">⚡</div>
+                        <h3 class="text-2xl font-bold mb-3 text-neon-yellow font-cyber">TESLA</h3>
+                        <p class="text-gray-300 mb-4 font-tech text-lg">API security vulnerability</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-neon-yellow/30">
+                            <span class="text-matrix-green font-bold text-2xl font-cyber neon-text">$7,500</span>
+                            <span class="text-gray-400 font-mono">2023</span>
+                        </div>
+                    </div>
+
+                    <!-- Netflix -->
+                    <div
+                        class="glassmorphism-cyber rounded-2xl p-8 cyber-card border-2 border-cyber-purple/20 hover:border-cyber-purple">
+                        <div class="text-7xl mb-6 text-center">🎬</div>
+                        <h3 class="text-2xl font-bold mb-3 text-cyber-purple font-cyber">NETFLIX</h3>
+                        <p class="text-gray-300 mb-4 font-tech text-lg">Account takeover prevention</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-cyber-purple/30">
+                            <span class="text-matrix-green font-bold text-2xl font-cyber neon-text">$6,000</span>
+                            <span class="text-gray-400 font-mono">2022</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="py-20 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-center font-cyber">
+                    <span class="text-gradient-cyber">&lt; CERTIFICATIONS /&gt;</span>
+                </h2>
+                <p class="text-center text-gray-400 mb-16 max-w-2xl mx-auto font-tech text-xl">
+                    Kredensial profesional dan sertifikasi keamanan siber
+                </p>
+
+                <!-- Horizontal scrolling container -->
+                <div class="flex overflow-x-auto snap-x scrollbar-hide gap-8 pb-8">
+                    <!-- CEH -->
+                    <div class="flex-shrink-0 w-80 sm:w-96 snap-center">
+                        <div
+                            class="glassmorphism-cyber rounded-2xl overflow-hidden h-full cyber-card border-2 border-cyber-blue/30">
+                            <div
+                                class="h-52 bg-gradient-to-br from-cyber-blue/30 to-cyber-purple/30 flex items-center justify-center relative overflow-hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-cyber-blue z-10">
+                                    <circle cx="12" cy="8" r="7" />
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                </svg>
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent"></div>
+                            </div>
+                            <div class="p-7">
+                                <h3 class="text-xl font-bold mb-3 text-cyber-blue font-cyber">
+                                    CEH
+                                </h3>
+                                <p class="text-lg text-white mb-2 font-tech">Certified Ethical Hacker</p>
+                                <p class="text-gray-400 mb-2 font-tech">EC-Council</p>
+                                <p class="text-sm text-gray-500 font-mono">Januari 2023</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OSCP -->
+                    <div class="flex-shrink-0 w-80 sm:w-96 snap-center">
+                        <div
+                            class="glassmorphism-cyber rounded-2xl overflow-hidden h-full cyber-card border-2 border-cyber-purple/30">
+                            <div
+                                class="h-52 bg-gradient-to-br from-cyber-purple/30 to-cyber-pink/30 flex items-center justify-center relative overflow-hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-cyber-purple z-10">
+                                    <circle cx="12" cy="8" r="7" />
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                </svg>
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent"></div>
+                            </div>
+                            <div class="p-7">
+                                <h3 class="text-xl font-bold mb-3 text-cyber-purple font-cyber">
+                                    OSCP
+                                </h3>
+                                <p class="text-lg text-white mb-2 font-tech">Offensive Security Certified Professional
+                                </p>
+                                <p class="text-gray-400 mb-2 font-tech">Offensive Security</p>
+                                <p class="text-sm text-gray-500 font-mono">Maret 2023</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security+ -->
+                    <div class="flex-shrink-0 w-80 sm:w-96 snap-center">
+                        <div
+                            class="glassmorphism-cyber rounded-2xl overflow-hidden h-full cyber-card border-2 border-matrix-green/30">
+                            <div
+                                class="h-52 bg-gradient-to-br from-matrix-green/30 to-cyber-blue/30 flex items-center justify-center relative overflow-hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-matrix-green z-10">
+                                    <circle cx="12" cy="8" r="7" />
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                </svg>
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent"></div>
+                            </div>
+                            <div class="p-7">
+                                <h3 class="text-xl font-bold mb-3 text-matrix-green font-cyber">
+                                    SECURITY+
+                                </h3>
+                                <p class="text-lg text-white mb-2 font-tech">CompTIA Security+</p>
+                                <p class="text-gray-400 mb-2 font-tech">CompTIA</p>
+                                <p class="text-sm text-gray-500 font-mono">Juli 2022</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CISSP -->
+                    <div class="flex-shrink-0 w-80 sm:w-96 snap-center">
+                        <div
+                            class="glassmorphism-cyber rounded-2xl overflow-hidden h-full cyber-card border-2 border-cyber-pink/30">
+                            <div
+                                class="h-52 bg-gradient-to-br from-cyber-pink/30 to-cyber-blue/30 flex items-center justify-center relative overflow-hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-cyber-pink z-10">
+                                    <circle cx="12" cy="8" r="7" />
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                </svg>
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent"></div>
+                            </div>
+                            <div class="p-7">
+                                <h3 class="text-xl font-bold mb-3 text-cyber-pink font-cyber">
+                                    CISSP
+                                </h3>
+                                <p class="text-lg text-white mb-2 font-tech">Certified Information Systems Security
+                                    Professional</p>
+                                <p class="text-gray-400 mb-2 font-tech">ISC²</p>
+                                <p class="text-sm text-gray-500 font-mono">September 2023</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HackerOne -->
+                    <div class="flex-shrink-0 w-80 sm:w-96 snap-center">
+                        <div
+                            class="glassmorphism-cyber rounded-2xl overflow-hidden h-full cyber-card border-2 border-neon-yellow/30">
+                            <div
+                                class="h-52 bg-gradient-to-br from-neon-yellow/30 to-cyber-blue/30 flex items-center justify-center relative overflow-hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-neon-yellow z-10">
+                                    <circle cx="12" cy="8" r="7" />
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                </svg>
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-bg to-transparent"></div>
+                            </div>
+                            <div class="p-7">
+                                <h3 class="text-xl font-bold mb-3 text-neon-yellow font-cyber">
+                                    HACKERONE
+                                </h3>
+                                <p class="text-lg text-white mb-2 font-tech">Bug Bounty Hunter</p>
+                                <p class="text-gray-400 mb-2 font-tech">HackerOne</p>
+                                <p class="text-sm text-gray-500 font-mono">Mei 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-8 text-gray-400 text-lg font-mono">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="inline animate-pulse text-cyber-blue">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                    Scroll horizontal untuk melihat lebih banyak
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 bg-black/40">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-center font-cyber">
+                    <span class="text-gradient-cyber">&lt; CONTACT /&gt;</span>
+                </h2>
+                <p class="text-center text-gray-400 mb-16 max-w-2xl mx-auto font-tech text-xl">
+                    Mari berkolaborasi untuk meningkatkan keamanan digital bersama
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <!-- Social Links -->
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold mb-8 font-cyber text-cyber-blue">&gt;_ SOCIAL_LINKS</h3>
+
+                        <a href="mailto:riskiper819@gmail.com"
+                            class="flex items-center gap-5 glassmorphism-cyber p-5 rounded-xl cyber-card border-2 border-cyber-blue/30 hover:border-cyber-blue">
+                            <div class="bg-gradient-to-br from-cyber-blue to-cyber-purple p-3 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg font-cyber">EMAIL</div>
+                                <div class="text-sm text-gray-400 font-mono">riskiper819@gmail.com</div>
+                            </div>
+                        </a>
+
+                        <a href="https://www.linkedin.com/in/riskipermana" target="_blank" rel="noopener noreferrer"
+                            class="flex items-center gap-5 glassmorphism-cyber p-5 rounded-xl cyber-card border-2 border-cyber-blue/30 hover:border-cyber-blue">
+                            <div class="bg-gradient-to-br from-cyber-blue to-cyber-purple p-3 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                                    <rect x="2" y="9" width="4" height="12" />
+                                    <circle cx="4" cy="4" r="2" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg font-cyber">LINKEDIN</div>
+                                <div class="text-sm text-gray-400 font-mono">linkedin.com/in/riskipermana</div>
+                            </div>
+                        </a>
+
+                        <a href="https://www.instagram.com/rskprmn_668/" target="_blank" rel="noopener noreferrer"
+                            class="flex items-center gap-5 glassmorphism-cyber p-5 rounded-xl cyber-card border-2 border-cyber-pink/30 hover:border-cyber-pink">
+                            <div class="bg-gradient-to-br from-cyber-pink to-cyber-purple p-3 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg font-cyber">INSTAGRAM</div>
+                                <div class="text-sm text-gray-400 font-mono">@rskprmn_668</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div>
+                        <h3 class="text-2xl font-bold mb-8 font-cyber text-cyber-blue">&gt;_ SEND_MESSAGE</h3>
+                        <form id="contactForm" class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-mono text-gray-400 mb-2">// NAME</label>
+                                <input type="text" id="name" name="name" placeholder="Your Name"
+                                    class="w-full px-5 py-4 bg-black/40 border-2 border-cyber-blue/30 rounded-lg focus:border-cyber-blue focus:outline-none transition-all text-white font-tech text-lg"
+                                    required>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-mono text-gray-400 mb-2">// EMAIL</label>
+                                <input type="email" id="email" name="email" placeholder="your.email@domain.com"
+                                    class="w-full px-5 py-4 bg-black/40 border-2 border-cyber-blue/30 rounded-lg focus:border-cyber-blue focus:outline-none transition-all text-white font-tech text-lg"
+                                    required>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-mono text-gray-400 mb-2">// MESSAGE</label>
+                                <textarea id="message" name="message" placeholder="Your message here..." rows="5"
+                                    class="w-full px-5 py-4 bg-black/40 border-2 border-cyber-blue/30 rounded-lg focus:border-cyber-blue focus:outline-none transition-all resize-none text-white font-tech text-lg"
+                                    required></textarea>
+                            </div>
+
+                            <div id="formStatus" class="hidden"></div>
+
+                            <button type="submit"
+                                class="w-full cyber-button px-8 py-4 rounded-lg font-bold text-xl font-cyber flex items-center justify-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <line x1="22" y1="2" x2="11" y2="13" />
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                                </svg>
+                                SEND MESSAGE
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-10 px-4 border-t-2 border-cyber-blue/30 relative z-10">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-gray-400 font-tech text-lg mb-2">
+                © 2024 <span class="text-cyber-blue font-cyber font-bold">RISKI PERMANA</span>
+            </p>
+            <p class="text-gray-500 font-mono">
+                [ SECURING THE DIGITAL WORLD ] <span class="text-red-500">❤</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Matrix Rain Script -->
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00f0ff';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 35);
+
+        window.addEventListener('resize', function () {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Form Handling
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const formStatus = document.getElementById('formStatus');
+
+            if (!name || !email || !message) {
+                showStatus('error', 'Mohon isi semua field');
+                return;
+            }
+
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                showStatus('error', 'Format email tidak valid');
+                return;
+            }
+
+            showStatus('success', '✓ Pesan berhasil dikirim!');
+            document.getElementById('contactForm').reset();
+
+            setTimeout(() => {
+                formStatus.classList.add('hidden');
+            }, 5000);
+        });
+
+        function showStatus(type, message) {
+            const formStatus = document.getElementById('formStatus');
+            const isSuccess = type === 'success';
+
+            formStatus.className = `flex items-center gap-3 p-4 rounded-lg border-2 ${isSuccess
+                    ? 'bg-matrix-green/20 border-matrix-green text-matrix-green'
+                    : 'bg-red-500/20 border-red-500 text-red-400'
+                } font-tech text-lg`;
+
+            const icon = isSuccess
+                ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+                : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+
+            formStatus.innerHTML = icon + '<span>' + message + '</span>';
+            formStatus.classList.remove('hidden');
+        }
+    </script>
+</body>
+
+</html>

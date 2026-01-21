@@ -1,0 +1,143 @@
+// ThreeJS Scene Setup
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x050505, 0.002);
+
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+// Wait for DOM to load if script is in head, but we usually put it at end of body.
+// Just in case, we check if container exists or wait.
+const container = document.getElementById('canvas-container');
+if (container) {
+    container.appendChild(renderer.domElement);
+}
+
+// Particle System
+const particlesGeometry = new THREE.BufferGeometry();
+const particlesCount = 1500; // Reduced for cleaner look
+
+const posArray = new Float32Array(particlesCount * 3);
+
+for (let i = 0; i < particlesCount * 3; i++) {
+    // Spread them out more for a vast data-space feel
+    posArray[i] = (Math.random() - 0.5) * 18;
+}
+
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+// Create Cyber Texture
+const canvas = document.createElement('canvas');
+canvas.width = 32; canvas.height = 32;
+const ctx = canvas.getContext('2d');
+ctx.beginPath();
+ctx.arc(16, 16, 10, 0, Math.PI * 2);
+ctx.fillStyle = '#ffffff';
+ctx.fill();
+const particleTexture = new THREE.CanvasTexture(canvas);
+
+// Material
+const material = new THREE.PointsMaterial({
+    size: 0.035,
+    map: particleTexture,
+    transparent: true,
+    color: 0x00f0ff,
+    blending: THREE.AdditiveBlending,
+    opacity: 0.8
+});
+
+// Mesh
+const particlesMesh = new THREE.Points(particlesGeometry, material);
+scene.add(particlesMesh);
+
+// Secondary System (Purple Data Streams)
+const secondaryGeo = new THREE.BufferGeometry();
+const secCount = 500;
+const secPos = new Float32Array(secCount * 3);
+for (let i = 0; i < secCount * 3; i++) secPos[i] = (Math.random() - 0.5) * 20;
+secondaryGeo.setAttribute('position', new THREE.BufferAttribute(secPos, 3));
+const secMat = new THREE.PointsMaterial({
+    size: 0.05,
+    map: particleTexture,
+    transparent: true,
+    color: 0xb000ff,
+    blending: THREE.AdditiveBlending
+});
+const secMesh = new THREE.Points(secondaryGeo, secMat);
+scene.add(secMesh);
+
+camera.position.z = 3;
+
+// Interaction
+let mouseX = 0;
+let mouseY = 0;
+let targetX = 0;
+let targetY = 0;
+
+document.addEventListener('mousemove', (event) => {
+    mouseX = event.clientX - window.innerWidth / 2;
+    mouseY = event.clientY - window.innerHeight / 2;
+});
+
+// Animation Loop
+const clock = new THREE.Clock();
+
+function animate() {
+    requestAnimationFrame(animate);
+    const elapsedTime = clock.getElapsedTime();
+
+    targetX = mouseX * 0.001;
+    targetY = mouseY * 0.001;
+
+    // Rotation
+    particlesMesh.rotation.y += 0.001;
+    particlesMesh.rotation.x += 0.0005;
+
+    secMesh.rotation.y -= 0.0015;
+    secMesh.rotation.x -= 0.001;
+
+    // Mouse ease
+    particlesMesh.rotation.y += 0.05 * (targetX - particlesMesh.rotation.y);
+    particlesMesh.rotation.x += 0.05 * (targetY - particlesMesh.rotation.x);
+
+    renderer.render(scene, camera);
+}
+
+animate();
+
+// Responsive Resize
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Contact Form Handling
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const originalText = btn.innerText;
+
+        // Simulation of sending
+        btn.innerText = 'ENCRYPTING & SENDING...';
+        btn.classList.add('opacity-75');
+
+        setTimeout(() => {
+            document.getElementById('formStatus').classList.remove('hidden');
+            btn.innerText = 'TRANSMISSION COMPLETE';
+            btn.classList.remove('bg-cyber-blue', 'text-black');
+            btn.classList.add('bg-matrix-green', 'text-black');
+            e.target.reset();
+
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove('bg-matrix-green', 'opacity-75');
+                btn.classList.add('bg-cyber-blue');
+                document.getElementById('formStatus').classList.add('hidden');
+            }, 3000);
+        }, 1500);
+    });
+}

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Riski Permana | Bug Bounty Hunter & Cyber Security Portfolio</title>
+    <meta name="description"
+        content="Official portfolio of Riski Permana, an independent security researcher specializing in Bug Bounty and digital security.">
+    <meta name="author" content="Riski Permana">
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f0ff',
+                        'cyber-purple': '#b000ff',
+                        'cyber-pink': '#ff00ff',
+                        'matrix-green': '#00ff41',
+                        'neon-yellow': '#fffc00',
+                        'dark-bg': '#050505',
+                    },
+                    fontFamily: {
+                        'cyber': ['Orbitron', 'sans-serif'],
+                        'tech': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Share Tech Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background-color: #050505;
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* ThreeJS Canvas */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Gradient overlay to make text readable */
+            background: radial-gradient(circle at center, transparent 0%, #050505 90%);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00f0ff;
+            border-radius: 4px;
+        }
+
+        /* Utilities */
+        .glass-panel {
+            background: rgba(10, 15, 20, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .neon-text-blue {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+        }
+
+        .neon-text-purple {
+            text-shadow: 0 0 10px rgba(176, 0, 255, 0.7);
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes cyber-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(0, 240, 255, 0.6), 0 0 10px rgba(0, 240, 255, 0.8) inset;
+            }
+        }
+
+        .cyber-glow {
+            animation: cyber-pulse 3s infinite;
+        }
+
+        .glitch-text {
+            position: relative;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00ff;
+            clip-path: inset(20% 0 30% 0);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 #00f0ff;
+            clip-path: inset(40% 0 43% 0);
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% {
+                clip-path: inset(20% 0 30% 0);
+            }
+
+            100% {
+                clip-path: inset(10% 0 60% 0);
+            }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% {
+                clip-path: inset(40% 0 43% 0);
+            }
+
+            100% {
+                clip-path: inset(80% 0 5% 0);
+            }
+        }
+
+        /* Hide Horizontal Scroll */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .snap-x {
+            scroll-snap-type: x mandatory;
+        }
+
+        .snap-center {
+            scroll-snap-align: center;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- ThreeJS Container -->
+    <div id="canvas-container"></div>
+
+    <!-- Content -->
+    <div class="relative z-10">
+
+        <!-- Hero -->
+        <header class="min-h-screen flex items-center justify-center px-4 relative">
+            <div class="max-w-7xl w-full mx-auto text-center z-10">
+
+                <div class="mb-10 relative inline-block animate-float">
+                    <div
+                        class="w-48 h-48 md:w-64 md:h-64 mx-auto rounded-full p-1 bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-pink cyber-glow relative">
+                        <div class="absolute inset-0 rounded-full border-2 border-white/20 animate-spin"
+                            style="animation-duration: 10s;"></div>
+                        <img src="profil.jpg" class="w-full h-full object-cover rounded-full border-4 border-black"
+                            onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full rounded-full bg-black flex items-center justify-center text-5xl font-cyber text-cyber-blue border-4 border-cyber-blue/50\'>RP</div>';">
+                    </div>
+                    <div
+                        class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur border border-cyber-blue/50 px-4 py-1 rounded text-cyber-blue text-xs font-mono tracking-widest">
+                        STATUS: ONLINE
+                    </div>
+                </div>
+
+                <h1 class="text-5xl md:text-8xl font-black font-cyber mb-4 glitch-text tracking-tighter"
+                    data-text="RISKI PERMANA">
+                    RISKI PERMANA
+                </h1>
+
+                <div
+                    class="flex flex-col md:flex-row items-center justify-center gap-4 text-xl md:text-2xl font-tech tracking-wide mb-12 text-gray-300">
+                    <span class="text-cyber-blue drop-shadow-lg">CYBER SECURITY RESEARCHER</span>
+                    <span class="hidden md:block text-gray-600">|</span>
+                    <span class="text-cyber-purple drop-shadow-lg">BUG BOUNTY HUNTER</span>
+                </div>
+
+                <div class="flex justify-center gap-6">
+                    <a href="#contact"
+                        class="group relative px-8 py-3 bg-cyber-blue/10 border border-cyber-blue text-cyber-blue font-cyber font-bold tracking-wider hover:bg-cyber-blue hover:text-black transition-all duration-300 skew-x-[-12deg] hover:shadow-[0_0_20px_rgba(0,240,255,0.6)]">
+                        <span class="block skew-x-[12deg]">INITIATE CONTACT</span>
+                    </a>
+                    <a href="#about"
+                        class="group relative px-8 py-3 bg-transparent border border-gray-600 text-gray-400 font-cyber font-bold tracking-wider hover:border-white hover:text-white transition-all duration-300 skew-x-[-12deg]">
+                        <span class="block skew-x-[12deg]">VIEW DATA</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Section (Floating Glass) -->
+        <section class="max-w-6xl mx-auto px-4 -mt-20 relative z-20 mb-24">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Stat 1 -->
+                <div
+                    class="glass-panel p-6 rounded-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-4xl md:text-5xl font-cyber font-bold text-cyber-blue mb-2">50+</div>
+                    <div class="text-gray-400 font-mono text-sm tracking-widest uppercase">Critical Bugs Found</div>
+                </div>
+                <!-- Stat 2 -->
+                <div
+                    class="glass-panel p-6 rounded-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-4xl md:text-5xl font-cyber font-bold text-matrix-green mb-2">$75K+</div>
+                    <div class="text-gray-400 font-mono text-sm tracking-widest uppercase">Total Bounties</div>
+                </div>
+                <!-- Stat 3 -->
+                <div
+                    class="glass-panel p-6 rounded-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="text-4xl md:text-5xl font-cyber font-bold text-cyber-purple mb-2">15+</div>
+                    <div class="text-gray-400 font-mono text-sm tracking-widest uppercase">Top Companies</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 px-4 relative">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex items-center gap-4 mb-12">
+                    <h2 class="text-4xl md:text-6xl font-cyber font-bold text-white neon-text-blue">SYSTEM INFO</h2>
+                    <div class="h-1 flex-grow bg-gradient-to-r from-cyber-blue to-transparent"></div>
+                </div>
+
+                <div class="glass-panel p-8 md:p-12 rounded-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-20">
+                        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#00f0ff"
+                            stroke-width="1">
+                            <circle cx="50" cy="50" r="40" />
+                            <path d="M50 10 L50 90 M10 50 L90 50" />
+                        </svg>
+                    </div>
+
+                    <p class="text-xl md:text-2xl text-gray-200 leading-relaxed font-tech mb-8">
+                        Saya adalah <span class="text-cyber-blue font-bold">Independent Security Researcher</span> yang
+                        berfokus pada web application security. Menemukan celah dimana orang lain melihat dinding.
+                    </p>
+                    <p class="text-lg text-gray-400 font-mono leading-relaxed mb-6">
+                        > Expertise: Penetration Testing, Vuln Assessment, API Security<br>
+                        > Mission: Securing digital infrastructure through ethical hacking.<br>
+                        > Status: Active & Available for collaboration.
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 mt-8">
+                        <span
+                            class="px-3 py-1 border border-cyber-blue/30 rounded text-cyber-blue text-sm font-mono hover:bg-cyber-blue/10 cursor-default">#PEN_TESTING</span>
+                        <span
+                            class="px-3 py-1 border border-cyber-purple/30 rounded text-cyber-purple text-sm font-mono hover:bg-cyber-purple/10 cursor-default">#BUG_BOUNTY</span>
+                        <span
+                            class="px-3 py-1 border border-matrix-green/30 rounded text-matrix-green text-sm font-mono hover:bg-matrix-green/10 cursor-default">#CEH_CERTIFIED</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hall of Fame (3D Cards Effect) -->
+        <section id="achievements" class="py-24 px-4 bg-black/20">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-4 mb-16 justify-end">
+                    <div class="h-1 flex-grow bg-gradient-to-l from-cyber-purple to-transparent"></div>
+                    <h2 class="text-4xl md:text-6xl font-cyber font-bold text-white neon-text-purple text-right">HALL OF
+                        FAME</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div
+                        class="group glass-panel p-8 rounded-xl hover:bg-cyber-blue/5 transition-all duration-500 hover:scale-[1.02] border-l-4 border-l-transparent hover:border-l-cyber-blue">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="text-5xl grayscale group-hover:grayscale-0 transition-all">🔍</div>
+                            <div class="text-cyber-blue font-mono text-xl">2024</div>
+                        </div>
+                        <h3
+                            class="text-3xl font-cyber font-bold text-white mb-2 group-hover:text-cyber-blue transition-colors">
+                            GOOGLE</h3>
+                        <p class="text-gray-400 font-tech mb-4">Critical Authentication Bypass</p>
+                        <div class="text-2xl font-mono text-matrix-green">$15,000 REWARD</div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div
+                        class="group glass-panel p-8 rounded-xl hover:bg-cyber-purple/5 transition-all duration-500 hover:scale-[1.02] border-l-4 border-l-transparent hover:border-l-cyber-purple">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="text-5xl grayscale group-hover:grayscale-0 transition-all">👤</div>
+                            <div class="text-cyber-purple font-mono text-xl">2024</div>
+                        </div>
+                        <h3
+                            class="text-3xl font-cyber font-bold text-white mb-2 group-hover:text-cyber-purple transition-colors">
+                            META</h3>
+                        <p class="text-gray-400 font-tech mb-4">Remote Code Execution (RCE)</p>
+                        <div class="text-2xl font-mono text-matrix-green">$10,000 REWARD</div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div
+                        class="group glass-panel p-8 rounded-xl hover:bg-pink-500/5 transition-all duration-500 hover:scale-[1.02] border-l-4 border-l-transparent hover:border-l-pink-500">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="text-5xl grayscale group-hover:grayscale-0 transition-all">🍎</div>
+                            <div class="text-cyber-pink font-mono text-xl">2023</div>
+                        </div>
+                        <h3
+                            class="text-3xl font-cyber font-bold text-white mb-2 group-hover:text-cyber-pink transition-colors">
+                            APPLE</h3>
+                        <p class="text-gray-400 font-tech mb-4">iCloud Data Leak Prevention</p>
+                        <div class="text-2xl font-mono text-matrix-green">$12,000 REWARD</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications (Horizontal Scroll) -->
+        <section class="py-24 px-4 overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                <h2
+                    class="text-3xl md:text-5xl font-cyber font-bold text-center mb-12 text-gray-500 hover:text-white transition-colors cursor-default">
+                    // CERTIFIED_AUTHORITY
+                </h2>
+
+                <div class="flex overflow-x-auto snap-x scrollbar-hide gap-6 pb-8 px-4">
+                    <!-- Cert 1 -->
+                    <div class="flex-shrink-0 w-80 snap-center glass-panel rounded-xl overflow-hidden group">
+                        <div
+                            class="h-40 bg-gradient-to-br from-cyber-blue/10 to-transparent flex items-center justify-center border-b border-cyber-blue/20">
+                            <span
+                                class="text-4xl font-black text-cyber-blue/50 group-hover:text-cyber-blue transition-colors">CEH</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="font-cyber font-bold text-white text-xl">Ethical Hacker</div>
+                            <div class="text-sm text-gray-400 font-mono mt-1">EC-Council • 2023</div>
+                        </div>
+                    </div>
+                    <!-- Cert 2 -->
+                    <div class="flex-shrink-0 w-80 snap-center glass-panel rounded-xl overflow-hidden group">
+                        <div
+                            class="h-40 bg-gradient-to-br from-cyber-purple/10 to-transparent flex items-center justify-center border-b border-cyber-purple/20">
+                            <span
+                                class="text-4xl font-black text-cyber-purple/50 group-hover:text-cyber-purple transition-colors">OSCP</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="font-cyber font-bold text-white text-xl">Offensive Security</div>
+                            <div class="text-sm text-gray-400 font-mono mt-1">OffSec • 2023</div>
+                        </div>
+                    </div>
+                    <!-- Cert 3 -->
+                    <div class="flex-shrink-0 w-80 snap-center glass-panel rounded-xl overflow-hidden group">
+                        <div
+                            class="h-40 bg-gradient-to-br from-matrix-green/10 to-transparent flex items-center justify-center border-b border-matrix-green/20">
+                            <span
+                                class="text-4xl font-black text-matrix-green/50 group-hover:text-matrix-green transition-colors">CISSP</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="font-cyber font-bold text-white text-xl">Security Pro</div>
+                            <div class="text-sm text-gray-400 font-mono mt-1">ISC² • 2022</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 px-4 pb-40">
+            <div class="max-w-4xl mx-auto glass-panel rounded-2xl p-8 md:p-16 relative">
+                <div
+                    class="absolute -top-6 left-1/2 -translate-x-1/2 bg-dark-bg px-6 py-2 border border-cyber-blue rounded-full text-cyber-blue font-cyber tracking-widest text-sm shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                    ENCRYPTION: ENABLED
+                </div>
+
+                <h2 class="text-4xl md:text-5xl font-cyber font-bold text-center mb-10 text-white">SECURE COMMS</h2>
+
+                <form id="contactForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="group">
+                            <label class="block text-xs font-mono text-cyber-blue mb-2 ml-1">IDENTIFIER (NAME)</label>
+                            <input type="text" id="name" required
+                                class="w-full bg-black/50 border border-gray-700 rounded p-4 text-white focus:border-cyber-blue focus:outline-none focus:shadow-[0_0_10px_rgba(0,240,255,0.2)] transition-all font-tech text-lg">
+                        </div>
+                        <div class="group">
+                            <label class="block text-xs font-mono text-cyber-blue mb-2 ml-1">CONTACT NODE
+                                (EMAIL)</label>
+                            <input type="email" id="email" required
+                                class="w-full bg-black/50 border border-gray-700 rounded p-4 text-white focus:border-cyber-blue focus:outline-none focus:shadow-[0_0_10px_rgba(0,240,255,0.2)] transition-all font-tech text-lg">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-cyber-blue mb-2 ml-1">PAYLOAD (MESSAGE)</label>
+                        <textarea id="message" rows="5" required
+                            class="w-full bg-black/50 border border-gray-700 rounded p-4 text-white focus:border-cyber-blue focus:outline-none focus:shadow-[0_0_10px_rgba(0,240,255,0.2)] transition-all font-tech text-lg"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-cyber-blue text-black font-cyber font-bold text-xl py-4 rounded hover:bg-white transition-colors duration-300 shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                        TRANSMIT DATA
+                    </button>
+
+                    <div id="formStatus"
+                        class="hidden text-center p-4 rounded bg-matrix-green/10 border border-matrix-green text-matrix-green font-mono">
+                        // ACCESS GRANTED: Message Transmitted Successfully
+                    </div>
+                </form>
+
+                <div class="mt-12 flex justify-center gap-8 border-t border-gray-800 pt-8">
+                    <a href="mailto:riskiper819@gmail.com"
+                        class="text-gray-400 hover:text-cyber-blue transition-colors hover:scale-110 transform duration-200">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </a>
+                    <a href="https://linkedin.com/in/riskipermana" target="_blank"
+                        class="text-gray-400 hover:text-cyber-blue transition-colors hover:scale-110 transform duration-200">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z">
+                            </path>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                    <a href="https://instagram.com/rskprmn_668" target="_blank"
+                        class="text-gray-400 hover:text-cyber-pink transition-colors hover:scale-110 transform duration-200">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ThreeJS Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // ThreeJS Scene Setup
+        const scene = new THREE.Scene();
+        // Fog for depth
+        scene.fog = new THREE.FogExp2(0x050505, 0.002);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Particle System
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 2000; // Total particles
+
+        const posArray = new Float32Array(particlesCount * 3);
+        // Colors array if we want gradients, but material color is easier for now
+
+        for (let i = 0; i < particlesCount * 3; i++) {
+            // Random spread but concentrated in a sphere shape roughly
+            posArray[i] = (Math.random() - 0.5) * 15; // Spread items out
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        // Create Cyber Texture (Circle) via canvas for performance vs loading image
+        const canvas = document.createElement('canvas');
+        canvas.width = 32; canvas.height = 32;
+        const ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.arc(16, 16, 10, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        const particleTexture = new THREE.CanvasTexture(canvas);
+
+        // Material
+        const material = new THREE.PointsMaterial({
+            size: 0.035,
+            map: particleTexture,
+            transparent: true,
+            color: 0x00f0ff, // Cyber Blue
+            blending: THREE.AdditiveBlending,
+            opacity: 0.8
+        });
+
+        // Mesh
+        const particlesMesh = new THREE.Points(particlesGeometry, material);
+        scene.add(particlesMesh);
+
+        // Add a secondary system for "Data streams" (Lines) or just another color particles
+        const secondaryGeo = new THREE.BufferGeometry();
+        const secCount = 500;
+        const secPos = new Float32Array(secCount * 3);
+        for (let i = 0; i < secCount * 3; i++) secPos[i] = (Math.random() - 0.5) * 20;
+        secondaryGeo.setAttribute('position', new THREE.BufferAttribute(secPos, 3));
+        const secMat = new THREE.PointsMaterial({
+            size: 0.05,
+            map: particleTexture,
+            transparent: true,
+            color: 0xb000ff, // Cyber Purple
+            blending: THREE.AdditiveBlending
+        });
+        const secMesh = new THREE.Points(secondaryGeo, secMat);
+        scene.add(secMesh);
+
+        camera.position.z = 3;
+
+        // Interaction
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        // Add gyroscope support for mobile or mouse for desktop
+        document.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX - window.innerWidth / 2;
+            mouseY = event.clientY - window.innerHeight / 2;
+        });
+
+        // Clock
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+
+            // Rotation
+            particlesMesh.rotation.y += 0.001;
+            particlesMesh.rotation.x += 0.0005;
+
+            secMesh.rotation.y -= 0.0015; // Inverse rotation
+            secMesh.rotation.x -= 0.001;
+
+            // Mouse interaction easing
+            particlesMesh.rotation.y += 0.05 * (targetX - particlesMesh.rotation.y);
+            particlesMesh.rotation.x += 0.05 * (targetY - particlesMesh.rotation.x);
+
+            // Wave effect simulation (simple wobble)
+            // Accessed via direct array modification is expensive in JS loop for this many particles without shaders
+            // So we stick to Scene/Group rotation for performance on mobile
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Responsive
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Form Logic
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = 'ENCRYPTING & SENDING...';
+            btn.classList.add('opacity-75');
+
+            setTimeout(() => {
+                document.getElementById('formStatus').classList.remove('hidden');
+                btn.innerText = 'TRANSMISSION COMPLETE';
+                btn.classList.remove('bg-cyber-blue', 'text-black');
+                btn.classList.add('bg-matrix-green', 'text-black');
+                e.target.reset();
+
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.remove('bg-matrix-green', 'opacity-75');
+                    btn.classList.add('bg-cyber-blue');
+                    document.getElementById('formStatus').classList.add('hidden');
+                }, 3000);
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>

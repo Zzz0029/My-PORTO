@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | System Access</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f0ff',
+                        'cyber-purple': '#b000ff',
+                        'cyber-pink': '#ff00ff',
+                        'matrix-green': '#00ff41',
+                        'neon-yellow': '#fffc00',
+                        'dark-bg': '#050505',
+                    },
+                    fontFamily: {
+                        'cyber': ['Orbitron', 'sans-serif'],
+                        'tech': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Share Tech Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(10, 15, 20, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .animate-glitch {
+            animation: glitch 1s infinite;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0)
+            }
+
+            20% {
+                transform: translate(-2px, 2px)
+            }
+
+            40% {
+                transform: translate(-2px, -2px)
+            }
+
+            60% {
+                transform: translate(2px, 2px)
+            }
+
+            80% {
+                transform: translate(2px, -2px)
+            }
+
+            100% {
+                transform: translate(0)
+            }
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen relative">
+
+    <!-- Background Elements -->
+    <div
+        class="absolute inset-0 z-0 opacity-20 bg-[url('https://media.giphy.com/media/U3qYN8S0j3bpK/giphy.gif')] bg-cover bg-center">
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-dark-bg z-0"></div>
+
+    <div class="relative z-10 glass-panel p-10 rounded-xl w-full max-w-md border-t-4 border-t-cyber-blue">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-cyber font-bold text-cyber-blue mb-2">SYSTEM ACCESS</h1>
+            <p class="text-gray-400 font-mono tracking-widest text-xs">RESTRICTED AREA // AUTHORIZED PERSONNEL ONLY</p>
+        </div>
+
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <label class="block text-xs font-mono text-cyber-blue mb-2">USERNAME_ID</label>
+                <input type="text" id="username"
+                    class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-cyber-blue focus:outline-none focus:shadow-[0_0_10px_rgba(0,240,255,0.2)] font-tech text-lg transition-all"
+                    required>
+            </div>
+            <div>
+                <label class="block text-xs font-mono text-cyber-blue mb-2">ACCESS_KEY</label>
+                <input type="password" id="password"
+                    class="w-full bg-black/50 border border-gray-700 rounded p-3 text-white focus:border-cyber-blue focus:outline-none focus:shadow-[0_0_10px_rgba(0,240,255,0.2)] font-tech text-lg transition-all"
+                    required>
+            </div>
+            <button type="submit"
+                class="w-full bg-cyber-blue text-black font-cyber font-bold py-3 rounded hover:bg-white transition-all duration-300 shadow-[0_0_15px_rgba(0,240,255,0.4)] tracking-widest">
+                AUTHENTICATE
+            </button>
+        </form>
+        <p id="errorMsg" class="mt-4 text-center text-red-500 font-mono text-sm hidden">ACCESS DENIED // INVALID
+            CREDENTIALS</p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    window.location.href = '/admin/dashboard.html';
+                } else {
+                    errorMsg.classList.remove('hidden');
+                    document.querySelector('.glass-panel').classList.add('animate-glitch');
+                    setTimeout(() => document.querySelector('.glass-panel').classList.remove('animate-glitch'), 500);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+
+</html>

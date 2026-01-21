@@ -1,0 +1,191 @@
+{
+  "certifications": [
+    {
+      "title": "NASA",
+      "issuer": "National Aeronautics and Space Administration",
+      "date": "20 Januari 2026",
+      "category": "Overseas",
+      "description": "Letter Of Appreciation",
+      "image": "assets/uploads/1768998805549.jpg",
+      "id": "1768998805555"
+    },
+    {
+      "id": "cert-1",
+      "title": "BOGOR",
+      "issuer": "Kota Bogor",
+      "date": "2025",
+      "image": "assets/uploads/1768997973330.jpeg",
+      "category": "Indonesia",
+      "description": "Certificate of Appreciation from Kota Bogor"
+    },
+    {
+      "id": "cert-2",
+      "title": "BMKG",
+      "issuer": "BMKG",
+      "date": "2024",
+      "image": "",
+      "category": "Indonesia",
+      "description": "Certificate of Appreciation from BMKG"
+    },
+    {
+      "id": "cert-3",
+      "title": "Cilacap Kab",
+      "issuer": "Cilacap Kab",
+      "date": "2024",
+      "image": "",
+      "category": "Indonesia",
+      "description": "Certificate of Appreciation from Cilacap Kab"
+    },
+    {
+      "id": "cert-4",
+      "title": "Bekasi Kota",
+      "issuer": "Bekasi Kota",
+      "date": "2024",
+      "image": "",
+      "category": "Indonesia",
+      "description": "Certificate of Appreciation from Bekasi Kota"
+    },
+    {
+      "id": "cert-5",
+      "title": "Wonosobo Kab",
+      "issuer": "Wonosobo Kab",
+      "date": "2024",
+      "image": "",
+      "category": "Indonesia",
+      "description": "Certificate of Appreciation from Wonosobo Kab"
+    },
+    {
+      "id": "cert-6",
+      "title": "Universitas Brawijaya (FILKOM)",
+      "issuer": "Universitas Brawijaya",
+      "date": "2024",
+      "image": "",
+      "category": "Indonesia",
+      "description": "Certificate of Appreciation from UB"
+    },
+    {
+      "id": "cert-9",
+      "title": "Universitas San Diego",
+      "issuer": "Universitas San Diego",
+      "date": "2024",
+      "image": "",
+      "category": "Overseas",
+      "description": "Certificate of Appreciation from San Diego University"
+    },
+    {
+      "id": "cert-7",
+      "title": "Gunung Kidul Kab",
+      "issuer": "Gunung Kidul Kab",
+      "date": "2024",
+      "image": "",
+      "category": "Indonesia",
+      "description": "Certificate of Appreciation from Gunung Kidul Kab"
+    },
+    {
+      "id": "cert-8",
+      "title": "Bantul Kab",
+      "issuer": "Bantul Kab",
+      "date": "2024",
+      "image": "",
+      "category": "Indonesia",
+      "description": "Certificate of Appreciation from Bantul Kab"
+    },
+    {
+      "id": "cert-10",
+      "title": "Avans Belanda",
+      "issuer": "Avans Hogeschool",
+      "date": "2024",
+      "image": "",
+      "category": "Overseas",
+      "description": "Letter of Appreciation"
+    }
+  ],
+  "hof": [
+    {
+      "id": "hof-1",
+      "company": "NASA VDVP",
+      "platform": "Bugcrowd",
+      "year": "2024",
+      "url": "#",
+      "reward": "Hall of Fame"
+    },
+    {
+      "id": "hof-2",
+      "company": "Maryland VDP PRO",
+      "platform": "Bugcrowd",
+      "year": "2024",
+      "url": "#",
+      "reward": "Hall of Fame"
+    },
+    {
+      "id": "hof-3",
+      "company": "DHS US VDP",
+      "platform": "Bugcrowd",
+      "year": "2024",
+      "url": "#",
+      "reward": "Hall of Fame"
+    },
+    {
+      "id": "hof-4",
+      "company": "DOL US VDP",
+      "platform": "Bugcrowd",
+      "year": "2024",
+      "url": "#",
+      "reward": "Hall of Fame"
+    },
+    {
+      "id": "hof-5",
+      "company": "GEA",
+      "platform": "Direct",
+      "year": "2024",
+      "url": "#",
+      "reward": "Hall of Fame"
+    },
+    {
+      "id": "hof-6",
+      "company": "KPN",
+      "platform": "Direct",
+      "year": "2025",
+      "url": "https://www.kpn.com/kpn-cert-en/hall-of-fame-en",
+      "reward": "Hall of Fame"
+    },
+    {
+      "id": "hof-7",
+      "company": "EUR Belanda",
+      "platform": "Direct",
+      "year": "2024",
+      "url": "#",
+      "reward": "Hall of Fame"
+    },
+    {
+      "id": "hof-8",
+      "company": "CUNI",
+      "platform": "Direct",
+      "year": "2024",
+      "url": "#",
+      "reward": "Hall of Fame"
+    },
+    {
+      "id": "hof-9",
+      "company": "Siemens",
+      "platform": "Direct",
+      "year": "2024",
+      "url": "#",
+      "reward": "Hall of Fame"
+    },
+    {
+      "id": "hof-10",
+      "company": "RGoods",
+      "platform": "Direct",
+      "year": "2024",
+      "url": "#",
+      "reward": "Hall of Fame"
+    }
+  ],
+  "about": {
+    "bio": "Saya adalah <span class=\"text-cyber-blue font-bold\">Independent Security Researcher</span> yang berfokus pada web application security. Menemukan celah dimana orang lain melihat dinding.",
+    "expertise": "Penetration Testing, Vuln Assessment, API Security",
+    "mission": "Securing digital infrastructure through ethical hacking.",
+    "status": "Active & Available for collaboration."
+  }
+}

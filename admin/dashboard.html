@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Control Center</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f0ff',
+                        'cyber-purple': '#b000ff',
+                        'cyber-pink': '#ff00ff',
+                        'matrix-green': '#00ff41',
+                        'dark-bg': '#050505',
+                    },
+                    fontFamily: {
+                        'cyber': ['Orbitron', 'sans-serif'],
+                        'tech': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Share Tech Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .sidebar {
+            background: rgba(0, 0, 0, 0.8);
+            border-right: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        .nav-item.active {
+            background: rgba(0, 240, 255, 0.1);
+            border-left: 3px solid #00f0ff;
+            color: #00f0ff;
+        }
+
+        .table-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-tech h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 flex-shrink-0 flex flex-col justify-between h-full p-6">
+        <div>
+            <div class="mb-10 flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-full bg-cyber-blue flex items-center justify-center font-bold text-black font-cyber">
+                    RP</div>
+                <div>
+                    <h2 class="font-cyber font-bold text-xl tracking-wider">ADMIN<span
+                            class="text-cyber-blue">_PANEL</span></h2>
+                    <span class="text-xs font-mono text-green-500">● ONLINE</span>
+                </div>
+            </div>
+
+            <nav class="space-y-4">
+                <button onclick="switchTab('certs')" id="nav-certs"
+                    class="nav-item active w-full text-left px-4 py-3 rounded transition-all font-bold tracking-wide flex items-center gap-3">
+                    <span>📜</span> CERTIFICATIONS
+                </button>
+                <button onclick="switchTab('hof')" id="nav-hof"
+                    class="nav-item w-full text-left px-4 py-3 rounded transition-all font-bold tracking-wide flex items-center gap-3">
+                    <span>🏆</span> HALL OF FAME
+                </button>
+                <button onclick="switchTab('about')" id="nav-about"
+                    class="nav-item w-full text-left px-4 py-3 rounded transition-all font-bold tracking-wide flex items-center gap-3">
+                    <span>ℹ️</span> SYSTEM INFO
+                </button>
+            </nav>
+        </div>
+
+        <button onclick="logout()"
+            class="w-full border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded transition-all font-mono text-sm tracking-widest">
+            TERMINATE_SESSION
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-8 overflow-y-auto">
+
+        <!-- About Section -->
+        <section id="section-about" class="hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-cyber font-bold text-matrix-green">SYSTEM INFORMATION</h1>
+                <button onclick="saveAbout()"
+                    class="bg-matrix-green text-black font-bold px-6 py-2 rounded hover:bg-white transition-all shadow-[0_0_10px_rgba(0,255,65,0.3)]">
+                    SAVE CHANGES
+                </button>
+            </div>
+
+            <div class="glass-panel p-8 rounded-xl max-w-4xl border border-gray-700">
+                <form id="aboutForm" class="space-y-6">
+                    <div>
+                        <label class="block text-cyber-blue font-mono mb-2 text-sm tracking-wider">BIO (HTML
+                            ALLOWED)</label>
+                        <textarea id="edit-bio" rows="4"
+                            class="w-full bg-black/50 border border-gray-700 rounded p-4 text-white font-tech text-lg focus:border-cyber-blue focus:outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 font-mono mb-2 text-sm tracking-wider">EXPERTISE</label>
+                        <input type="text" id="edit-expertise"
+                            class="w-full bg-black/50 border border-gray-700 rounded p-4 text-white font-mono focus:border-cyber-blue focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 font-mono mb-2 text-sm tracking-wider">MISSION</label>
+                        <input type="text" id="edit-mission"
+                            class="w-full bg-black/50 border border-gray-700 rounded p-4 text-white font-mono focus:border-cyber-blue focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 font-mono mb-2 text-sm tracking-wider">STATUS</label>
+                        <input type="text" id="edit-status"
+                            class="w-full bg-black/50 border border-gray-700 rounded p-4 text-white font-mono focus:border-cyber-blue focus:outline-none">
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="section-certs">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-cyber font-bold text-cyber-blue">MANAGE CERTIFICATIONS</h1>
+                <button onclick="openModal('cert')"
+                    class="bg-cyber-blue text-black font-bold px-6 py-2 rounded hover:bg-white transition-all shadow-[0_0_10px_rgba(0,240,255,0.3)]">
+                    + ADD NEW
+                </button>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-cyber-blue border-b border-gray-700 font-mono text-sm uppercase">
+                            <th class="p-4">Title</th>
+                            <th class="p-4">Issuer</th>
+                            <th class="p-4">Date</th>
+                            <th class="p-4">Category</th>
+                            <th class="p-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="certTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- HOF Section -->
+        <section id="section-hof" class="hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-cyber font-bold text-cyber-purple">MANAGE HALL OF FAME</h1>
+                <button onclick="openModal('hof')"
+                    class="bg-cyber-purple text-white font-bold px-6 py-2 rounded hover:bg-white hover:text-purple-600 transition-all shadow-[0_0_10px_rgba(176,0,255,0.3)]">
+                    + ADD NEW
+                </button>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-cyber-purple border-b border-gray-700 font-mono text-sm uppercase">
+                            <th class="p-4">Company</th>
+                            <th class="p-4">Platform</th>
+                            <th class="p-4">Year</th>
+                            <th class="p-4">Reward/Type</th>
+                            <th class="p-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hofTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Form -->
+    <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 flex items-center justify-center">
+        <div class="glass-panel p-8 rounded-xl w-full max-w-lg relative border border-gray-600">
+            <button onclick="closeModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button>
+
+            <h2 id="modalTitle" class="text-2xl font-cyber font-bold mb-6 text-white">ADD ENTRY</h2>
+
+            <form id="entryForm" class="space-y-4">
+                <input type="hidden" id="entryId">
+                <input type="hidden" id="entryType">
+
+                <!-- Dynamic Fields -->
+                <div id="modalFields"></div>
+
+                <div class="pt-4 flex gap-4">
+                    <button type="submit"
+                        class="flex-1 bg-green-500 hover:bg-green-400 text-black font-bold py-3 rounded transition-all">SAVE
+                        DATA</button>
+                    <button type="button" onclick="closeModal()"
+                        class="flex-1 border border-gray-600 hover:bg-white/10 text-white font-bold py-3 rounded transition-all">CANCEL</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
