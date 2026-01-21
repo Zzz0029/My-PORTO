@@ -45,10 +45,27 @@ const upload = multer({ storage: storage });
 const DATA_FILE = path.join(__dirname, 'data', 'data.json');
 
 // Helper: Read Data
+// Helper: Read Data
 const readData = async () => {
     if (process.env.VERCEL) {
         try {
-            const data = await kv.get('portfolio_data');
+            let data = await kv.get('portfolio_data');
+
+            // IF KV IS EMPTY, SEED FROM LOCAL FILE
+            if (!data) {
+                console.log('KV is empty. Seeding from local data.json...');
+                try {
+                    const localData = fs.readFileSync(path.join(__dirname, 'data', 'data.json'), 'utf8');
+                    data = JSON.parse(localData);
+                    await kv.set('portfolio_data', data);
+                    console.log('KV seeded successfully.');
+                } catch (seedErr) {
+                    console.error('Error seeding KV:', seedErr);
+                    // Fallback to empty structure if seeding fails
+                    data = { certifications: [], hof: [], about: {}, stats: {} };
+                }
+            }
+
             return data || { certifications: [], hof: [], about: {}, stats: {} };
         } catch (err) {
             console.error('KV Read Error:', err);
