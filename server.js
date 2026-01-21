@@ -5,9 +5,11 @@ const multer = require('multer');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const { kv } = require('@vercel/kv');
+const { put } = require('@vercel/blob');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -22,36 +24,56 @@ app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/admin', express.static(path.join(__dirname, 'admin')));
 
 // File Upload Configuration
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const dir = './assets/uploads';
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
+const storage = process.env.VERCEL
+    ? multer.memoryStorage()
+    : multer.diskStorage({
+        destination: (req, file, cb) => {
+            const dir = './assets/uploads';
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+            cb(null, dir);
+        },
+        filename: (req, file, cb) => {
+            cb(null, Date.now() + path.extname(file.originalname));
         }
-        cb(null, dir);
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
+    });
+
 const upload = multer({ storage: storage });
 
 // Data File Path
 const DATA_FILE = path.join(__dirname, 'data', 'data.json');
 
 // Helper: Read Data
-const readData = () => {
-    try {
-        const data = fs.readFileSync(DATA_FILE, 'utf8');
-        return JSON.parse(data);
-    } catch (err) {
-        return { certifications: [], hof: [] };
+const readData = async () => {
+    if (process.env.VERCEL) {
+        try {
+            const data = await kv.get('portfolio_data');
+            return data || { certifications: [], hof: [], about: {}, stats: {} };
+        } catch (err) {
+            console.error('KV Read Error:', err);
+            return { certifications: [], hof: [], about: {}, stats: {} };
+        }
+    } else {
+        try {
+            if (!fs.existsSync(DATA_FILE)) {
+                return { certifications: [], hof: [], about: {}, stats: {} };
+            }
+            const data = fs.readFileSync(DATA_FILE, 'utf8');
+            return JSON.parse(data);
+        } catch (err) {
+            return { certifications: [], hof: [], about: {}, stats: {} };
+        }
     }
 };
 
 // Helper: Write Data
-const writeData = (data) => {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+const writeData = async (data) => {
+    if (process.env.VERCEL) {
+        await kv.set('portfolio_data', data);
+    } else {
+        fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+    }
 };
 
 // Auth Middleware
@@ -100,46 +122,59 @@ app.get('/api/check-auth', (req, res) => {
 });
 
 // Get All Data
-app.get('/api/data', (req, res) => {
-    const data = readData();
+app.get('/api/data', async (req, res) => {
+    const data = await readData();
     res.json(data);
 });
 
 // Add Item
-app.post('/api/data/:type', authenticate, upload.single('image'), (req, res) => {
+app.post('/api/data/:type', authenticate, upload.single('image'), async (req, res) => {
     const { type } = req.params;
     const item = req.body;
-    const data = readData();
+    const data = await readData();
 
     if (req.file) {
-        item.image = `assets/uploads/${req.file.filename}`;
+        if (process.env.VERCEL) {
+            try {
+                const blob = await put(req.file.originalname, req.file.buffer, { access: 'public' });
+                item.image = blob.url;
+            } catch (err) {
+                console.error('Blob Upload Error:', err);
+                return res.status(500).json({ message: 'Error uploading image' });
+            }
+        } else {
+            item.image = `assets/uploads/${req.file.filename}`;
+        }
     }
 
     item.id = Date.now().toString();
 
     if (type === 'certifications') {
+        if (!data.certifications) data.certifications = [];
         data.certifications.push(item);
     } else if (type === 'hof') {
+        if (!data.hof) data.hof = [];
         data.hof.push(item);
     } else {
         return res.status(400).json({ message: 'Invalid type' });
     }
 
-    writeData(data);
+    await writeData(data);
     res.json({ success: true, item });
 });
 
-// Update Item
-app.put('/api/reorder/:type', authenticate, (req, res) => {
+// Update Item Order
+app.put('/api/reorder/:type', authenticate, async (req, res) => {
     const { type } = req.params;
     const { order } = req.body; // Array of IDs in new order
-    const data = readData();
+    const data = await readData();
 
     if (!order || !Array.isArray(order)) {
         return res.status(400).json({ message: 'Invalid order data' });
     }
 
     if (type === 'certifications') {
+        if (!data.certifications) data.certifications = [];
         // Create a map for O(1) lookup
         const codeMap = new Map(data.certifications.map(item => [item.id, item]));
         // Rebuild array based on ID order, filtering out any invalid IDs
@@ -153,6 +188,7 @@ app.put('/api/reorder/:type', authenticate, (req, res) => {
         });
         data.certifications = newOrder;
     } else if (type === 'hof') {
+        if (!data.hof) data.hof = [];
         const codeMap = new Map(data.hof.map(item => [item.id, item]));
         const newOrder = order.map(id => codeMap.get(id)).filter(item => item !== undefined);
         const currentIds = new Set(newOrder.map(item => item.id));
@@ -166,44 +202,62 @@ app.put('/api/reorder/:type', authenticate, (req, res) => {
         return res.status(400).json({ message: 'Invalid type' });
     }
 
-    writeData(data);
+    await writeData(data);
     res.json({ success: true });
 });
 
 // Update About Section
-app.put('/api/data/about', authenticate, (req, res) => {
+app.put('/api/data/about', authenticate, async (req, res) => {
     const updates = req.body;
-    const data = readData();
+    const data = await readData();
 
     data.about = { ...data.about, ...updates };
-    writeData(data);
+    await writeData(data);
     res.json({ success: true, about: data.about });
 });
 
 // Update Stats Section
-app.put('/api/data/stats', authenticate, (req, res) => {
+app.put('/api/data/stats', authenticate, async (req, res) => {
     const updates = req.body;
-    const data = readData();
+    const data = await readData();
 
     data.stats = { ...data.stats, ...updates };
-    writeData(data);
+    await writeData(data);
     res.json({ success: true, stats: data.stats });
 });
 
-app.put('/api/data/:type/:id', authenticate, upload.single('image'), (req, res) => {
+// Update Item (with image)
+app.put('/api/data/:type/:id', authenticate, upload.single('image'), async (req, res) => {
     const { type, id } = req.params;
     const updates = req.body;
-    const data = readData();
+    const data = await readData();
 
     let list = type === 'certifications' ? data.certifications : data.hof;
+    if (!list) list = [];
+
     const index = list.findIndex(item => item.id === id);
 
     if (index !== -1) {
         if (req.file) {
-            updates.image = `assets/uploads/${req.file.filename}`;
+            if (process.env.VERCEL) {
+                try {
+                    const blob = await put(req.file.originalname, req.file.buffer, { access: 'public' });
+                    updates.image = blob.url;
+                } catch (err) {
+                    console.error('Blob Upload Error:', err);
+                    return res.status(500).json({ message: 'Error uploading image' });
+                }
+            } else {
+                updates.image = `assets/uploads/${req.file.filename}`;
+            }
         }
+
         list[index] = { ...list[index], ...updates };
-        writeData(data);
+
+        if (type === 'certifications') data.certifications = list;
+        else data.hof = list;
+
+        await writeData(data);
         res.json({ success: true, item: list[index] });
     } else {
         res.status(404).json({ message: 'Item not found' });
@@ -211,17 +265,21 @@ app.put('/api/data/:type/:id', authenticate, upload.single('image'), (req, res) 
 });
 
 // Delete Item
-app.delete('/api/data/:type/:id', authenticate, (req, res) => {
+app.delete('/api/data/:type/:id', authenticate, async (req, res) => {
     const { type, id } = req.params;
-    const data = readData();
+    const data = await readData();
 
     if (type === 'certifications') {
-        data.certifications = data.certifications.filter(item => item.id !== id);
+        if (data.certifications) {
+            data.certifications = data.certifications.filter(item => item.id !== id);
+        }
     } else if (type === 'hof') {
-        data.hof = data.hof.filter(item => item.id !== id);
+        if (data.hof) {
+            data.hof = data.hof.filter(item => item.id !== id);
+        }
     }
 
-    writeData(data);
+    await writeData(data);
     res.json({ success: true });
 });
 

@@ -10,94 +10,103 @@
       "id": "1768998805555"
     },
     {
+      "id": "cert-10",
+      "title": "Avans Hogeschool (Netherlands)",
+      "issuer": "Avans Hogeschool ",
+      "date": "2 Januari 2026",
+      "image": "assets/uploads/1769003503630.jpg",
+      "category": "Overseas",
+      "description": "Letter of Appreciation"
+    },
+    {
+      "id": "cert-9",
+      "title": "Universitas San Diego",
+      "issuer": "University San Diego (California,U.S)",
+      "date": "6 Januari 2026",
+      "image": "assets/uploads/1769003246331.png",
+      "category": "Overseas",
+      "description": "Certificate of Appreciation from San Diego University"
+    },
+    {
       "id": "cert-1",
-      "title": "BOGOR",
-      "issuer": "Kota Bogor",
-      "date": "2025",
-      "image": "assets/uploads/1768997973330.jpeg",
+      "title": "Kota-Bogor",
+      "issuer": "Pemerintah Kota Bogor",
+      "date": "12 Desember  2025",
+      "image": "assets/uploads/1769002746903.jpg",
       "category": "Indonesia",
       "description": "Certificate of Appreciation from Kota Bogor"
     },
     {
       "id": "cert-2",
       "title": "BMKG",
-      "issuer": "BMKG",
-      "date": "2024",
-      "image": "",
+      "issuer": "Badan Meteorologi, Klimatologi, dan Geofisika",
+      "date": "24 Desember 2025",
+      "image": "assets/uploads/1769002803837.jpg",
       "category": "Indonesia",
       "description": "Certificate of Appreciation from BMKG"
     },
     {
       "id": "cert-3",
-      "title": "Cilacap Kab",
-      "issuer": "Cilacap Kab",
-      "date": "2024",
-      "image": "",
+      "title": "Cilacap-Kab",
+      "issuer": "Pemerintah Kabupaten Cilacap ",
+      "date": "29 Desember 2025",
+      "image": "assets/uploads/1769002853661.png",
       "category": "Indonesia",
       "description": "Certificate of Appreciation from Cilacap Kab"
     },
     {
       "id": "cert-4",
       "title": "Bekasi Kota",
-      "issuer": "Bekasi Kota",
-      "date": "2024",
-      "image": "",
+      "issuer": "Pemerintah kota Bekasi",
+      "date": "5 Januari 2026",
+      "image": "assets/uploads/1769002890118.jpg",
       "category": "Indonesia",
       "description": "Certificate of Appreciation from Bekasi Kota"
     },
     {
       "id": "cert-5",
-      "title": "Wonosobo Kab",
-      "issuer": "Wonosobo Kab",
-      "date": "2024",
-      "image": "",
+      "title": "Wonosobo-Kab",
+      "issuer": "Pemerintah Kabupaten Wonosobo",
+      "date": "7 Januari 2026",
+      "image": "assets/uploads/1769002935499.jpg",
       "category": "Indonesia",
       "description": "Certificate of Appreciation from Wonosobo Kab"
     },
     {
       "id": "cert-6",
-      "title": "Universitas Brawijaya (FILKOM)",
-      "issuer": "Universitas Brawijaya",
-      "date": "2024",
-      "image": "",
+      "title": "Universitas Brawijaya ",
+      "issuer": "Universitas Brawijaya (FILKOM)",
+      "date": "7 Januari 2026",
+      "image": "assets/uploads/1769002965252.png",
       "category": "Indonesia",
       "description": "Certificate of Appreciation from UB"
     },
     {
-      "id": "cert-9",
-      "title": "Universitas San Diego",
-      "issuer": "Universitas San Diego",
-      "date": "2024",
-      "image": "",
-      "category": "Overseas",
-      "description": "Certificate of Appreciation from San Diego University"
-    },
-    {
       "id": "cert-7",
-      "title": "Gunung Kidul Kab",
-      "issuer": "Gunung Kidul Kab",
-      "date": "2024",
-      "image": "",
+      "title": "GunungKidul-Kab",
+      "issuer": "Pemerintah kabputan GunungKidul",
+      "date": "14 Januari 2026",
+      "image": "assets/uploads/1769003159405.jpg",
       "category": "Indonesia",
       "description": "Certificate of Appreciation from Gunung Kidul Kab"
     },
     {
       "id": "cert-8",
-      "title": "Bantul Kab",
-      "issuer": "Bantul Kab",
-      "date": "2024",
-      "image": "",
+      "title": "Bantul-Kab",
+      "issuer": "Pemerintah Kabupaten Bantul",
+      "date": "19 Januari 2026",
+      "image": "assets/uploads/1769003310579.jpg",
       "category": "Indonesia",
       "description": "Certificate of Appreciation from Bantul Kab"
     },
     {
-      "id": "cert-10",
-      "title": "Avans Belanda",
-      "issuer": "Avans Hogeschool",
-      "date": "2024",
-      "image": "",
-      "category": "Overseas",
-      "description": "Letter of Appreciation"
+      "title": "Universitas Airlangga",
+      "issuer": "Universitas Airlangga",
+      "date": "13 Januari 2026",
+      "category": "Indonesia",
+      "description": "Certificate of Appreciation from Unair",
+      "image": "assets/uploads/1769003594346.jpg",
+      "id": "1769003594351"
     }
   ],
   "hof": [
@@ -137,8 +146,8 @@
       "id": "hof-5",
       "company": "GEA",
       "platform": "Direct",
-      "year": "2024",
-      "url": "#",
+      "year": "2026",
+      "url": "https://www.gea.com/en/about-us/information-security/products/responsible-disclosure-of-security-issues/hall-of-fame/",
       "reward": "Hall of Fame"
     },
     {
@@ -153,33 +162,41 @@
       "id": "hof-7",
       "company": "EUR Belanda",
       "platform": "Direct",
-      "year": "2024",
-      "url": "#",
+      "year": "2025",
+      "url": "https://www.eur.nl/en/campus/locations/campus-woudestein/security-safety/information-security/hall-famehttps://www.eur.nl/en/campus/locations/campus-woudestein/security-safety/information-security/hall-fame",
       "reward": "Hall of Fame"
     },
     {
       "id": "hof-8",
       "company": "CUNI",
       "platform": "Direct",
-      "year": "2024",
-      "url": "#",
+      "year": "2026",
+      "url": "https://csirt.cuni.cz/en/acknowledgements/",
       "reward": "Hall of Fame"
     },
     {
       "id": "hof-9",
       "company": "Siemens",
       "platform": "Direct",
-      "year": "2024",
-      "url": "#",
+      "year": "2026",
+      "url": "https://www.siemens.com/global/en/products/services/cert/hall-of-thanks.html",
       "reward": "Hall of Fame"
     },
     {
       "id": "hof-10",
       "company": "RGoods",
       "platform": "Direct",
-      "year": "2024",
-      "url": "#",
+      "year": "2026",
+      "url": "https://rgoods.com/security-acknowledgments/",
       "reward": "Hall of Fame"
+    },
+    {
+      "company": "Transjakarta",
+      "platform": "Direct",
+      "year": "2026",
+      "reward": "Hall Of Fame",
+      "url": "https://csirt.transjakarta.co.id/white-hacker/",
+      "id": "1769004132288"
     }
   ],
   "about": {
